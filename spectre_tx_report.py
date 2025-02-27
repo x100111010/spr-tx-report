@@ -35,7 +35,8 @@ def fetch_transactions(addresses):
     additional_tx_to_search = []
 
     for tx in txs:
-        for i in tx.get("inputs", []):
+        inputs = tx.get("inputs", []) or []
+        for i in inputs:
             if i["previous_outpoint_hash"] not in tx_cache:
                 additional_tx_to_search.append(i["previous_outpoint_hash"])
 
@@ -50,7 +51,8 @@ def fetch_transactions(addresses):
     for tx in txs:
         print(f"Processing transaction {tx['transaction_id']}")
         outpointed_inputs = []
-        for inp in tx.get("inputs", []):
+        inputs = tx.get("inputs", []) or []
+        for inp in inputs:
             prev_hash = inp["previous_outpoint_hash"]
             if prev_hash in tx_cache:
                 output = next(
